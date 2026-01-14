@@ -86,10 +86,3 @@
   font-size: 15px;
   color: #333;
 }
-
-/* Responsive */
-@media (max-width: 600px) {
-  .product-card {
-    width: 100%;
-  }
-}

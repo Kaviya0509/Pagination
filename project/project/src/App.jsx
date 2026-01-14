@@ -38,7 +38,7 @@ const App = () => {
           <div key={value.id} className="product-card">
             
             <img 
-              src={value.image}
+              src={value.imageUrl}
               alt={value.name}
               className="product-img"
             />
