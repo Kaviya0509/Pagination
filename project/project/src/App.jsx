@@ -1,75 +1,79 @@
 import React, { useState } from "react";
+import Data from "./Data.json";
 import "./App.css";
 
-const birthdayData = [
-  {
-    id: 1,
-    name: "Bertie Yates",
-    age: 29,
-    image: "https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-2_ipcjws.jpg"
-  },
-  {
-    id: 2,
-    name: "Hester Hogan",
-    age: 32,
-    image: "https://res.cloudinary.com/diqqf3eq2/image/upload/v1595959131/person-3_rxtqvi.jpg"
-  },
-  {
-    id: 3,
-    name: "Larry Little",
-    age: 36,
-    image: "https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883423/person-4_t9nxjt.jpg"
-  },
-  {
-    id: 4,
-    name: "Sean Walsh",
-    age: 34,
-    image: "https://res.cloudinary.com/diqqf3eq2/image/upload/v1586883334/person-1_rfzshl.jpg"
-  },
-  {
-    id: 5,
-    name: "Lola Gardner",
-    age: 29,
-    image: "https://randomuser.me/api/portraits/women/5.jpg"
-  },
-  {
-    id: 6,
-    name: "Sudesh Gowda",
-    age: 26,
-    image: "https://krisubirthaday.netlify.app/static/media/320849616_383478357320075_8435420645393527293_n.c4b90639ed548d0854df.jpg"
-  },
-  {
-    id: 7,
-    name: "Naveen Kumar",
-    age: 28,
-    image: "https://i.pinimg.com/474x/a9/f3/97/a9f397b63d87546828c428d3a1d37895.jpg"
-  }
-];
+const App = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const recordsPerPage = 4;
 
-function App() {
- const[data,setData]=useState(birthdayData)
+  const totalPages = Math.ceil(Data.length / recordsPerPage);
 
- function handleClear(){
-  setData([])
- }
+  const showingData = () => {
+    const firstIndex = (currentPage - 1) * recordsPerPage;
+    const lastIndex = firstIndex + recordsPerPage;
+    return Data.slice(firstIndex, lastIndex);
+  };
+  
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
 
   return (
-    <main>
-      <section className="card-container">
-        <h3>{data.length} birthdays today</h3>
-        {data.map((value,index) => (
-          <div key={value.id} className="person">
-            <img src={value.image} alt={value.name} />
-            <div className="person-details">
-              <h6>{value.name}</h6>
-              <p>{value.age} years</p>
-            </div>
+    <div className="container">
+
+      <h1 className="title">E-Commerce Products</h1>
+
+      {/* FLEX IMAGE GRID */}
+      <div className="product-grid">
+        {showingData().map((value,index) => (
+          <div key={value.id} className="product-card">
+            
+            <img 
+              src={value.image}
+              alt={value.name}
+              className="product-img"
+            />
+
+            <h3 className="product-name">{value.name}</h3>
+            <p className="product-info">{value.category}</p>
+            <p className="product-price">${value.price}</p>
           </div>
         ))}
-        <button onClick={handleClear}>Clear All</button>
-      </section>
-    </main>
+      </div>
+
+      {/* Pagination */}
+      <div className="pagination">
+        <button 
+          className="btn" 
+          onClick={handlePrevious}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+
+        <span className="page-text">
+          Page {currentPage} of {totalPages}
+        </span>
+
+        <button 
+          className="btn" 
+          onClick={handleNext} 
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
+      </div>
+    </div>
   );
-}
+};
 
 export default App;
